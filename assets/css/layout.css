@@ -1,0 +1,1122 @@
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+html,
+body {
+    width: 100vw;
+    height: 100vh;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    font-family: 'titilliumregular' !important;
+    line-height: 1.2;
+    overflow: hidden;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.overstrike {
+    text-decoration: overline;
+}
+
+#mensagem {
+    position: absolute;
+    width: 80vw;
+    margin-left: 0;
+    top: 10vw;
+    background-color: #EDBF53;
+    padding: 20px;
+    text-align: center;
+    border-radius: 20px;
+    box-shadow: 5px 5px 0 0 rgba(0, 0, 0, 0.3);
+    font-size: 1.3rem;
+    display: none;
+}
+
+#mensagem button {
+    padding: 20px;
+    width: 180px;
+    border-radius: 20px;
+    border: 0;
+    font-weight: bold;
+    font-size: 2rem;
+}
+
+#loader {
+    width: 100%;
+    max-width: 500px;
+    border-radius: 20px;
+    height: 40px;
+    border: 2px solid black;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+#barraLoader {
+    width: 0%;
+    height: 100%;
+    background-color: #F3DD57;
+}
+
+#unityApp {
+    width: 85vw !important;
+    height: Calc(85vw * 9/16) !important;
+    max-width: 90em !important;
+    max-height: Calc(90em * 9/16) !important;
+    display: block !important;
+    margin: 0 auto !important;
+}
+
+#loadScreen {
+    position: fixed;
+    z-index: 200;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    flex-flow: column;
+}
+
+#loadMsg {
+    font-size: 1.8rem;
+    text-align: center;
+    font-weight: bold;
+}
+
+.hidden {
+    display: none !important;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+strong,
+b {
+    font-family: 'titillium_bdbold' !important;
+    line-height: 1;
+}
+
+/*
+.fixBar{
+    background-color: white;
+    width: 75vw;
+    border-radius: 10px;
+    min-height: 80px;
+    padding: 16px;
+    padding-left: 10vw;
+    box-shadow: 0 2px 2px rgba(0,0,0,0.3);
+    margin-bottom: 20px;
+    margin: 10px;
+    margin-bottom: -100px;
+    position: relative;
+    z-index: 10;
+}
+*/
+
+.img-center {
+    max-width: 120px;
+    margin: 10px auto;
+    display: block;
+}
+
+.img-center-clear {
+    margin: 20px auto;
+    display: block;
+}
+
+.pages {
+    line-height: 1.5;
+}
+
+.fixBar {
+    background-color: white;
+    width: 400px;
+    border-radius: 10px;
+    min-height: 80px;
+    padding: 16px;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
+    position: absolute;
+    z-index: 10;
+    right: 10px;
+}
+
+.containerFixo {
+    width: 85vw;
+    max-width: 90em;
+    min-height: 80px;
+    margin-bottom: -100px;
+    position: relative;
+    z-index: 10;
+    pointer-events: none;
+
+}
+
+#logos {
+    padding: 0 5vw;
+    /* border: 1px solid red;*/
+    position: absolute;
+    width: 100%;
+    top: 0;
+}
+
+#logos #logo {
+    float: right;
+    margin-top: 30px;
+    top: 0;
+    right: 20px;
+    max-width: 500px;
+}
+
+.screen {
+    position: relative;
+
+    width: 100vw;
+    height: Calc(100vh - 80px);
+    /*border: 1px solid magenta;*/
+    overflow: hidden;
+    animation: fadeIn forwards 300ms;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+#screen01 {
+    height: 100vh;
+}
+
+#screen01 footer {
+    text-align: center;
+    width: 100%;
+}
+
+.bgColor01 {
+    background-color: #F3DD57;
+}
+
+.bgColor02 {
+    background-color: #F4A553;
+}
+
+#mainHeader {
+    background-color: white;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 80px;
+    padding: 10px 40px;
+}
+
+#mainHeader h1 {
+    border-bottom: 3px solid black;
+    width: fit-content;
+    padding-right: 40px;
+    margin: 19px 0;
+    display: inline-block;
+    font-size: 1.4vw;
+}
+
+#mainHeader .logo {
+    float: right;
+    top: 10px;
+    max-width: 250px;
+}
+
+#mainTitle {
+    position: relative;
+    width: 345px;
+    text-align: justify;
+    text-justify: inter-word;
+    font-size: 2.3rem;
+    display: inline-block;
+
+}
+
+#mainTitle .destaque {
+    border-bottom: 3px solid black;
+    display: block;
+    font-size: 3.5rem;
+
+}
+
+.screen footer {
+    text-align: center;
+}
+
+.screen .label {
+    background-color: white;
+    text-align: center;
+    padding: 20px;
+    position: absolute;
+    top: 20px;
+    width: 100%
+}
+
+.btUi {
+    margin: 20px;
+    position: relative;
+    padding: 20px;
+    border-radius: 15px;
+    border: 0;
+    text-transform: uppercase;
+    font-weight: bold;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+    font-size: 1.2rem;
+    min-width: 150px;
+    background-color: white;
+}
+
+.btPdf {
+    margin: 20px;
+    position: relative;
+    padding: 20px;
+    border-radius: 15px;
+    border: 0;
+    text-transform: uppercase;
+    font-weight: bold;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+    font-size: 1.2rem;
+    min-width: 150px;
+    background-color: white;
+    display: inline;
+}
+
+.btUi.btUnityCallback {
+    padding-right: 30px;
+    min-width: 220px;
+}
+
+.btUi.atencao {
+    color: red;
+    padding-right: 30px;
+}
+
+.btUi.home {
+    padding-right: 30px;
+}
+
+.btUi.home::after {
+    background-image: url(../img/ico_home.png);
+    background-size: 25px;
+}
+
+.btUi.cancel::after {
+    background-image: url(../img/ico_close.png);
+    background-size: 18px;
+}
+
+.btUi.noIcon::after {
+    visibility: hidden;
+    display: none;
+}
+
+#btCloseUnity {
+    position: absolute;
+    bottom: 20px;
+    left: 50px;
+}
+
+#btEndActivity {
+    position: absolute;
+    bottom: 20px;
+    right: 50px;
+    animation: fadeIn 300ms forwards ease-in;
+}
+
+#msgInicial {
+    text-align: center;
+    width: 100%;
+    max-width: 60vw;
+    margin-top: 8vh;
+}
+
+.box {
+    border: 1px solid;
+    padding: 20px 40px;
+    border-radius: 15px;
+    margin: 10px;
+    font-size: 1.4rem;
+}
+
+.btUi:hover {
+    transform: scale(1.05);
+}
+
+.btUi::after {
+    box-sizing: border-box;
+    padding: 10px;
+    content: "";
+    position: absolute;
+    display: block;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    top: Calc(50% - 20px);
+    right: -20px;
+    box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.5);
+    background-color: white;
+    background-image: url(../img/seta_d.png);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 25%;
+}
+
+.btUi.leftIcon::after {
+    content: "";
+    background-image: url(../img/seta_e.png);
+    right: inherit;
+    left: -20px;
+    box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.5);
+    background-color: white;
+}
+
+.btUi.equip {
+    padding-left: 50px;
+    min-width: 240px !important;
+    display: block;
+    margin: 40px;
+    padding-right: 30px;
+}
+
+.pages .btBackMenu,
+.btBackPage {
+    float: left;
+}
+
+#btMobMenu {
+    position: fixed;
+    z-index: 60;
+    top: 20px;
+    right: 40px;
+    border: none;
+    background-color: transparent;
+    width: 60px;
+    height: 60px;
+}
+
+#mobMenu {
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.7);
+    position: fixed;
+    top: 0;
+    left: 0;
+    animation: fadeIn 300ms ease-in forwards;
+    z-index: 60;
+}
+
+#btMobMenu:hover {
+    transform: scale(1.1);
+}
+
+#btMobMenu img {
+    width: 100%;
+}
+
+#mobMenuOptions.msgWindow {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100vh;
+    margin: 0;
+    border-radius: 20px 0 0 20px;
+    text-align: left;
+    font-size: 1.4rem;
+}
+
+#mobMenuOptions h2 {
+    text-align: center;
+    font-size: 2.2rem;
+    padding-top: 10px;
+    margin-bottom: 30px;
+}
+
+#mobMenuOptions #closeMobMenu {
+    float: right;
+    background: transparent;
+    border: 0;
+    width: 40px;
+    height: 40px;
+    margin-top: -10px;
+    outline: transparent;
+}
+
+#mobMenuOptions #closeMobMenu:hover {
+    transform: scale(1.2);
+}
+
+#mobMenuOptions #closeMobMenu img {
+    width: 100%;
+}
+
+#btMenuInicial {
+    position: absolute;
+    bottom: 10px;
+    left: 15%;
+    width: 70%;
+    background: transparent;
+    border: 0;
+    border-top: 2px solid lightgray;
+    text-align: right;
+    padding: 20px;
+    background-image: url(../img/ico_home.png);
+    background-repeat: no-repeat;
+    background-size: 30px;
+    background-position: 10px center;
+    font-size: 1.5rem;
+}
+
+#btFontMinus,
+#btFontPlus {
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+    border: 0;
+    background-color: #006281;
+    color: white;
+    margin: 5px 5px;
+}
+
+.btUi.equip::before {
+    content: "";
+    width: 70px;
+    height: 70px;
+    border: 5px solid #006281;
+    box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.5);
+    background-color: white;
+    position: absolute;
+    left: -35px;
+    top: Calc(50% - 35px);
+    border-radius: 50%;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 20px;
+}
+
+#unityContainer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    /*
+    border: 1p solid greenyellow;
+    background-color: greenyellow;*/
+    width: 100vw;
+    height: Calc(100vh - 80px);
+    z-index: 50;
+    animation: fadeIn 500ms ease-in;
+    background-color: darkgrey;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-flow: column;
+}
+
+#unityContainer canvas {
+    width: 100%;
+    height: 100%;
+    /*border: 1px solid red;*/
+}
+
+#equipIBUTG {
+    z-index: 10;
+}
+
+.equip_dosimetro::before {
+    background-image: url(../img/equip_dosimetro.png);
+}
+
+.equip_decibelimetro::before {
+    background-image: url(../img/equip_decibelimetro.png);
+}
+
+.equip_ibutg::before {
+    background-image: url(../img/equip_ibutg.png);
+}
+
+.equip_luximetro::before {
+    background-image: url(../img/equip_luximetro.png);
+}
+
+.equip_multigases::before {
+    background-image: url(../img/equip_multigases.png);
+}
+
+
+.screen .conteudo {
+    max-width: 650px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.conteudo.small {
+    max-width: 300px;
+}
+
+.screen footer {
+    position: absolute;
+    bottom: 0;
+    padding: 20px 50px;
+    width: 100%;
+}
+
+.screen .carousel {
+    width: Calc(100% - 40px);
+    height: Calc(100% - 40px);
+    margin: 20px;
+    /*border: 1px solid magenta;*/
+}
+
+.btUi.left {
+    text-align: left;
+    min-width: 270px;
+}
+
+/*ajuste - remover da ui*/
+.btUi span {
+    display: none;
+    font-family: 'titilliumlight';
+    text-transform: initial;
+}
+
+#teste-container {
+    box-sizing: border-box;
+    width: 100vw;
+    height: 100vh;
+    border: 2px solid red;
+}
+
+.screen .pages {
+    width: 100%;
+    height: 100%;
+    /*background-color: lime;*/
+    position: relative;
+    display: inherit;
+    flex-direction: inherit;
+    align-items: inherit;
+    justify-content: inherit;
+}
+
+.screen .pages footer {
+    position: absolute;
+    bottom: 0;
+    text-align: right;
+    width: 100%;
+}
+
+.simpleMsgWindow {
+    box-sizing: border-box;
+    background-color: white;
+    position: absolute;
+    font-size: 1.3rem;
+    padding: 20px 40px;
+    min-height: 60px;
+    z-index: 90;
+    width: 100%;
+    text-align: center;
+    margin-top: 80px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    animation: fadeIn 300ms ease-in forwards;
+}
+
+#uiMessages {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    background-color: rgba(0, 0, 0, 0.7);
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    animation: fadeIn forwards 300ms ease-in;
+}
+
+#popupMsgWindow,
+#confirmacaoMsgWindow {
+    text-align: center;
+    font-size: 2rem;
+}
+
+.msgWindow {
+    border-radius: 30px;
+    padding: 30px;
+    background-color: white;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.5);
+    margin: 20px;
+}
+
+#confirmacaoMsgWindow .msgWindow {
+    max-width: 600px;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+    opacity: 1;
+    width: 10%;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: white;
+    width: 80px;
+    height: 80px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.5);
+    background-size: 20%;
+    background-position: center center;
+    border-radius: 50%;
+}
+
+.carousel-control-prev-icon:hover,
+.carousel-control-next-icon:hover {
+    transform: scale(1.1);
+}
+
+.carousel-control-prev-icon {
+    background-image: url(../img/seta_e.png);
+}
+
+.carousel-control-next-icon {
+    background-image: url(../img/seta_d.png);
+}
+
+.pages .carousel .carousel-item .row {
+    margin-left: 10%;
+    margin-right: 10%;
+    height: 100%;
+}
+
+.mobOnly {
+    display: none;
+}
+
+#msgPortrait {
+    display: none;
+    animation: fadeIn forwards 300ms ease-in;
+    width: 100vw;
+    height: 100vh;
+    padding: 30px;
+    text-align: center;
+}
+
+#msgIe h1 span {
+    font-size: 10rem;
+}
+
+#msgIe {
+    margin-top: 10%;
+    width: 100%;
+    height: 100%;
+}
+
+@media screen and (max-width:990px) {
+    #mensagem {
+        display: block;
+    }
+}
+
+@media screen and (max-height:790px) and (orientation:landscape) {
+    #unityApp {
+        width: 72vw !important;
+        height: Calc(72vw * 9/16) !important;
+        max-width: 90em !important;
+        max-height: Calc(90em * 9/16) !important;
+        display: block !important;
+        margin: 0 auto !important;
+    }
+
+    .containerFixo {
+        width: 72vw
+    }
+
+    #btEndActivity {
+
+        right: 10px;
+        bottom: 10px;
+
+    }
+
+    #btCloseUnity {
+        left: 10px;
+        bottom: 10px;
+    }
+}
+
+
+@media screen and (max-width:990px) and (orientation:portrait) {
+    .main {
+        display: none;
+    }
+
+    #msgPortrait {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        animation: fadeIn forwards 300ms ease-in;
+    }
+
+    #msgPortrait h1 span {
+        font-size: 10rem;
+    }
+}
+
+.desktopOnly {
+    display: inherit;
+}
+
+@media screen and (max-width:990px) {
+    .mobOnly {
+        display: block;
+    }
+
+    #mainTitle {
+        width: 220px;
+        text-align: justify;
+        font-size: 1.45rem;
+    }
+
+    #logos {
+        padding: 10px;
+        position: absolute;
+        width: 300px;
+        height: 100%;
+        top: 0;
+        left: 0;
+
+    }
+
+    #logos #logo {
+        float: none;
+        margin-top: 30px;
+        top: auto;
+        bottom: 90px;
+        right: inherit;
+        left: 0;
+        max-width: 220px;
+        position: absolute;
+    }
+
+    /*
+    .screen footer {
+        position: absolute;
+        bottom: 0;
+        padding: 0px 20px;
+        width: 100%;
+    }*/
+
+    #screen01 {
+        display: block;
+    }
+
+    #msgInicial {
+        text-align: center;
+        width: 100%;
+        max-width: 59vw;
+        margin-top: 10px;
+        float: right;
+        border: 0;
+        font-size: 1rem;
+        text-align: right;
+        padding: 0;
+    }
+
+    #screen01 footer {
+        text-align: center;
+        width: 100%;
+        background-color: #EDBF53;
+        height: 80px;
+        padding: 10px;
+        position: absolute;
+        bottom: 0;
+        top: auto;
+        background-image: url(../img/fundo_bg.png);
+        background-position: top;
+        background-repeat: no-repeat;
+        background-size: contain;
+    }
+
+    .screen.bgColor01,
+    .screen.bgColor02 {
+        background-image: url(../img/fundo_bg.png);
+        background-position: top;
+        background-repeat: no-repeat;
+        background-size: contain;
+    }
+
+    .screen.bgColor02 {
+        background-image: url(../img/fundo_bg01.jpg);
+    }
+
+    #screen01 {
+        background-image: none;
+    }
+
+    .screen footer {
+        position: fixed;
+        top: 0;
+        bottom: auto;
+        padding: 0;
+        width: 80px;
+        left: 0;
+        height: 80px;
+    }
+
+    #btStart {
+        background-color: transparent;
+        box-shadow: none;
+        margin: 0;
+        width: 100%
+    }
+
+    #btStart::after {
+        display: none;
+    }
+
+    #mainHeader .logo,
+    #mainHeader h1 {
+        display: none;
+    }
+
+    #btMobMenu {
+        top: 10px;
+        right: 20px;
+    }
+
+    /*
+    .screen .label {
+        background-color: white;
+        text-align: center;
+        padding: 20px;
+        position: fixed;
+        top: 24px;
+        width: 100%;
+        padding: 0 80px;
+        background-color: transparent;
+        font-size: 1.6rem;
+    }*/
+    .screen .label {
+        background-color: white;
+        text-align: center;
+        padding: 20px;
+        position: fixed;
+        top: 0;
+        height: 80px;
+        width: 70vw;
+        display: flex;
+        padding: 0 0;
+        background-color: transparent;
+        font-size: 1.6rem;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #btBackScr01,
+    .btBackMenu,
+    #btCloseUnity,
+    .btBackPage {
+        background: transparent;
+        box-shadow: none;
+        width: 50px;
+        height: 50px;
+        display: block;
+        font-size: 0;
+        padding: 0;
+        min-width: auto;
+        margin: 15px;
+        background-image: url(../img/seta.png);
+        background-size: contain;
+        position: center center;
+        background-repeat: no-repeat;
+    }
+
+    #btCloseUnity {
+        position: fixed;
+        left: 5px;
+        top: 5px;
+    }
+
+    #btBackScr01::after,
+    .btBackMenu::after,
+    #btCloseUnity::after,
+    .btBackPage::after {
+        display: none;
+    }
+
+    #mainHeader {
+        background-color: #EDBF53;
+    }
+
+    #unityContainer {
+        height: 100vh;
+    }
+
+    #uiMessages {
+        top: 0;
+    }
+
+    .msgWindow {
+        margin: 0px;
+        font-size: 1.4rem;
+        line-height: 1;
+    }
+
+    .msgWindow h1 {
+        font-size: 1.6rem;
+        margin-bottom: 20px;
+    }
+
+    #btEndActivity {
+        display: none;
+    }
+
+    .screen .pages footer {
+        position: fixed;
+    }
+
+    .btPular {
+        display: block;
+        background-color: transparent;
+        box-shadow: none;
+        margin-top: 0px;
+        margin-left: 10px;
+        padding-left: 10px;
+        font-size: 1.6rem;
+    }
+
+    .btPular::after {
+        box-shadow: none;
+        background-color: transparent;
+        width: 60px;
+        right: -10px;
+    }
+
+    .carousel-item {
+        display: block;
+    }
+
+    .carousel {
+        display: none;
+    }
+
+
+    .screen .pages {
+        display: block;
+        overflow-y: auto;
+        box-sizing: border-box;
+        padding: 30px;
+    }
+
+    .row {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .pages img {
+        display: block !important;
+        margin: 0 auto !important;
+    }
+
+    .desktopOnly {
+        display: none;
+    }
+}
+
+@media screen and (max-width:600px) {
+    #loadScreen>img {
+        max-width: 150px;
+    }
+}
+
+/*
+@media screen and (min-width: 320px) and (max-width: 767px) and (orientation: portrait) {
+    html {
+      transform: rotate(270deg);
+      transform-origin: left top;
+      width: 100vh;
+      overflow-x: hidden;
+      position: absolute;
+      top: 100%;
+      left: 0;
+    }
+  }
+  */
+
+/* AJUSTES LP 2024 */
+#uiMessages.uiMessage-iluminancia {
+    background-color: transparent;
+    justify-content: start;
+    padding-right: 210px;
+    align-items: end;
+    padding-bottom: 70px;
+}
+
+#uiMessages.uiMessage-iluminancia #btClosePopup, .js-btn {
+    position: absolute;
+    bottom: 70px;
+    right: 50px;
+    transform: translateY(-50%);
+}
+.btUi.js-btn {
+    min-width: 150px;
+}
+.js-btn:hover {
+    transform: translateY(-50%);
+}
+.iluminancia-feedback {
+    background-color: white;
+    padding: 10px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.5);
+    margin: 20px;
+    border-radius: 15px;
+    max-width: 600px;
+}
+.iluminancia-feedback h3 {
+    text-align: center;
+}
+#uiMessages.uiMessage-iluminancia #popupMsgWindow {
+    font-size: 1.4rem;
+}
+
+@media (max-width: 850px) {
+    #uiMessages.uiMessage-iluminancia {
+        padding-bottom: 5px;
+    }
+    .iluminancia-feedback {
+        max-width: 350px;
+        margin-bottom: 0;
+    }
+    .msgWindow {
+        padding: 10px 5px;
+        margin-left: 10px;
+    }
+    #uiMessages.uiMessage-iluminancia #btClosePopup {
+        bottom: 0px;
+    }
+}

@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>SimuladorTST</title>
+    <!--<link rel="manifest" href="assets/js/manifest.json">-->
+    <link rel="stylesheet" href="assets/font/titillium.css">
+    <link rel="stylesheet" href="assets/bs4/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/bs4/bootstrap-toggle.min.css">
+    <link rel="stylesheet" href="assets/css/layout.css">
+    <script src="assets/js/CustomUnityProgress.js"></script>
+    <script src="Build/UnityLoader.js"></script>     
+    <script>
+        var unityInstance = UnityLoader.instantiate("unityApp", "Build/SimuladorTSTCachPersist.json", { onProgress: CustomUnityProgress, Module: { cacheControl: {"default":"immutable"},}});
+    </script>
+</head>
+<body>
+
+<!-- tela de loading -->    
+<div id="loadScreen">
+    <img src="assets/img/spinner.gif" alt="">
+
+    <div id="mensagem">
+        <p>Aplicativos móveis desenvolvidos em webGl são compatíveis
+            com os navegadores chrome e firefox. Clique em ok para continuar.
+        </p>
+        <button onclick="$('#unityApp button').click(); $('#mensagem').fadeOut(300);">OK</button>
+    </div>
+    <div id="loader">
+        <div id="barraLoader"></div>
+    </div>
+    <div id="loadMsg">Aguarde, carregando aplicação.</div>
+</div>  
+<div id="msgIe" style="padding: 50px; text-align: center;">
+    <h1><span>&#9888;</span></h1>
+    <h1>Sentimos muito, mas o aplicativo não é compativel com Internet Explorer, por favor, utilize um browser moderno
+        para acessar este conteúdo (Chrome, Firefox, Microsoft Edge 76+, Opera).</h1>
+   
+</div>
+<div id="msgPortrait">
+    <h1><span>&#9888;</span></h1>
+    <h1>O aplicativo está otimizado para orientação landscape, gire o dispositivo para iniciar.</h1>
+    <img src="./assets/img/rotate.gif" style="max-width:150px; margin-top:30px" alt="">
+</div>
+<div class="main">
+        <button id="btMobMenu" class="mobOnly"><img src="assets/img/ico_menu.png" alt="Menu"></button>
+        <!-- 
+            menu para os dispositivos móveis
+            quase todas as funçoes estao implementadas parcialmente, exceto o mute, mas eh simples de tratar via script
+        -->
+        <div id="mobMenu" class="hidden">
+            <div id="mobMenuOptions" class="msgWindow">
+                <h2>Menu  <button id="closeMobMenu"><img src="assets/img/ico_close.png" alt=""></button></h2>
+                <div>
+                   Música <input type="checkbox" checked data-toggle="toggle">
+                </div>
+                <div>
+                    <span>Tamanho da fonte</span> <button id="btFontMinus">-A</button><button id="btFontPlus">+A</button>
+                </div>
+                <div class="separador"></div>
+                <button id="btMenuInicial">Voltar ao menu inicial</button>
+    
+            </div>
+        </div>
+    
+        <header id="mainHeader" class="hidden">
+                <h1>Simulador de uso de equipamentos para monitoramento de riscos ambientais</h1>
+                <img src="assets/img/logo.png" alt="Fecomércio RS/Senac" class="logo">  
+        </header>
+        <!--Mensagens que aparecem na ui com sobreposição
+            janelas popUp e a janela de confirmação
+        -->    
+        <div id="uiMessages" class="hidden">
+            <div id="popupMsgWindow" class="hidden">
+                <div class="msgWindow">
+                        <h1 id="popupTitle">Titulo</h1>
+                        <p><span id="popupMsg"></span></p>
+                </div>          
+                <button id="btClosePopup" class="btUi">Ok</button>
+            </div>
+            <div id="confirmacaoMsgWindow" class="hidden">
+                <div class="msgWindow">
+                    <h1>Pop-up de confirmação</h1>
+                    <p><span id="confirmacaoMsg">Você tem certeza que deseja voltar ao menu inicial?</span></p>
+                    <p>Você perderá todo o seu progresso.</p>
+                </div>
+               
+                <button id="btHome" class="btUi home">Sair para o menu</button>
+                <button id="btCancel" class="btUi cancel atencao">Cancelar</button>
+            </div>
+        </div>
+        <!--Div em que a apliçação da unity é carregada-->
+        <div id="unityContainer" class="hidden leftIcon">
+             <!--<div id="unityApp" style="width: 1920px; height: 1080px; margin: auto"></div>-->
+            <div class="containerFixo">
+                <div id="msgFixa" class="fixBar">
+                        exemplo mensagem fixa
+                </div>
+            </div>
+             <div id="simpleMsg" class="simpleMsgWindow">
+                exemplo
+            </div>
+    
+            <!--<div id="unityApp" style="width: 85vw; height: Calc(85vw * 9/16); max-width:90em; max-height:Calc(90em * 9/16); display:block; margin:0 auto"></div>-->
+            <div id="unityApp"></div>
+            <button id="btCloseUnity" class="btUi leftIcon">Voltar</button>
+            <button id="btEndActivity" class="btUi noIcon atencao">Encerrar</button>
+        </div>
+        <!-- 
+            Tela inicial
+        -->
+        <div id="screen01" class="screen bgColor01">
+             <div id="logos">
+                 <h1 id="mainTitle">
+                     <span class="destaque">Simulador</span>
+                     uso de equipamentos para monitoramento de riscos ambientais
+                 </h1>
+                 <img src="assets/img/logo.png" id="logo" alt="Logo Fecomércio/Senac">
+             </div>
+             <div id="msgInicial" class="box">
+                 <p>Neste material, você poderá simular o uso de diferentes equipamentos de monitoramento de riscos ambientais.</p>
+                 <p>Primeiramente, selecione o tipo de risco e, depois, escolha o equipamento a ser utilizado. Você poderá escolher um ambiente ocupacional específico ou um ambiente de testes para realizar o monitoramento do risco.</p>
+                 <p>Após selecionar o equipamento, você terá acesso ao tutorial de uso dele. Configure o equipamento conforme orientações e posicione-o no(s) local(is) adequado(s) para realizar a medição.</p>
+                 <p>O equipamento apresentará os resultados do monitoramento</p>
+             </div>
+             <footer>
+                <button id="btStart" class="btUi">Iniciar</button>
+             </footer>
+        </div>
+        <!-- 
+            Tela 2 - escolha dos equipamentos
+        -->
+        <div id="screen02" class="screen bgColor02">        
+            <h2 class="label">
+                Selecione a natureza do risco ambiental:
+            </h2>
+            <div class="conteudo">
+                <button value="scrCalor" class="btUi left equipMenu">calor <span>IBUTG</span></button>
+                <button value="scrGas" class="btUi left equipMenu">gás <span>Detector multigás</span></button>
+                <button value="scrIlumi" class="btUi left equipMenu">iluminância <span>Luxímetro</span></button>
+                <button value="scrRuido" class="btUi left equipMenu">ruído <span>Decibelímetro e Dosímetro</span></button>
+            </div>
+            <footer>
+                <button value="screen02" id="btBackScr01" class="btUi leftIcon">voltar</button>
+            </footer>      
+        </div>
+    <!-- 
+        TELAS abaixo sao as dos grupos de equipamentos.
+        Os botoes da classe btUnityCallback são os que fazem chamadas diretas para a unity para carregar uma cena.
+        no value desses botões dever ser setada a cena que deseja ser carregada, através do seu numero,
+        
+        Exemplo: a cena referente ao ambiente ocupacional do decibelimetro é a cena 17, entao o value do botão fica igual a 17.
+        
+        <button value="17" class="btUi btUnityCallback">Ocupacional</button>
+    -->
+     <!-- Equipamentos Iluminação - Tela de seleção e equipamentos -->    
+        <div id="scrIlumi" class="screen bgColor01 hidden">
+            <h2 class="label">
+                   Risco Ambiental - Iluminância
+                   <span>Selecione o equipamento</span>
+            </h2>
+            <div class="conteudo">
+                    <button value="equipLuximetro" class="btUi left equip equip_luximetro">Luxímetro</span></button>
+                   
+                </div>
+            <footer>
+                    <button value="screen02" class="btUi leftIcon btBackMenu">voltar</button>
+            </footer>    
+        </div> 
+        <!--TELA EQUIPAMENTO - Luximetro -->
+        <div id="equipLuximetro" class="screen bgColor02 hidden">
+                <div id="mainLuximetro" class="pages">
+                    <div id="luxcontent" class="mobOnly">                                               
+                            mobile only
+                    </div>
+                    <a href="./assets/manuais/MANUAL_LUXIMETRO.pdf" target="_blank" download><button  class="btPdf mobOnly">Baixar manual</button></a>
+                    <div id="carouselLuximetro" class="carousel slide">
+                            <ol class="carousel-indicators">
+                                <li data-target="#carouselLuximetro" data-slide-to="0" class="active"></li>
+                                <li data-target="#carouselLuximetro" data-slide-to="1"></li>
+                                <li data-target="#carouselLuximetro" data-slide-to="2"></li>
+                            </ol>
+                            <div class="carousel-inner h-100" role="listbox">
+                                <div class="carousel-item h-100 active">
+                                    <div class="row h-100 justify-content-center align-items-center">
+                                        <div class="caixa">
+                                            <h2>MANUAL DE OPERAÇÃO DO LUXÍMETRO DIGITAL</h2>
+                                            <h3>1. EQUIPAMENTO E VISOR LCD</h3>
+                                           
+                                                    <img src="./assets/img/tela_luximetro.png" class="img-responsive img-center" style="max-width:600px" alt="">
+                                               
+                                                    <ol>
+                                                        <li>Tampa do sensor</li>
+                                                        <li>Sensor</li>
+                                                        <li>Visor LCD</li>
+                                                        <li>Seletor de faixa de iluminância </li>
+                                                        <li>Seletor “ON/OFF” e “HOLD”</li>
+                                                        <li>Cabo</li>
+                                                    </ol>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="carousel-item h-100">
+                                    <div class="row h-100 justify-content-center align-items-center">
+                                        <clas class="caixa">
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <h3>2. INSTRUÇÕES DE OPERAÇÃO</h3>
+                                                    <ol>
+                                                        <li>Retire a tampa que protege o sensor.</li>
+                                                        <li>Deslize o seletor da posição “OFF” para a posição “ON”.</li>
+                                                        <li>Aguarde três segundos para que o sensor estabilize.</li>  
+                                                        <li>Posicione o sensor no ponto de medição, aguarde alguns segundos para a ambientação do sensor e deslize o botão da posição “ON” para a posição “HOLD”, para estabilizar o valor e realizar a leitura de iluminância. Para avaliar novos pontos, reposicione o botão da posição “HOLD” para a posição “ON”.</li>                          
+                                                        </ol>
+                                                        <p>Se durante a leitura for apresentada a seguinte tela:</p>
+                                                          <img src="./assets/img/lcd_lux.jpg" class="img-center" style="max-width:200px">
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    
+                                                    <p>Significa que a iluminância do ponto é maior do que a faixa de seleção. Os valores para a faixa de iluminância são 2.000, 20.000 e 50.000 lux. Quando o valor de 2.000 estiver selecionado, o valor lido é o valor real; quando o valor de 20.000 estiver selecionado, o valor lido deve ser multiplicado por 10 para obter o valor real; quando o valor de 50.000 estiver selecionado, o valor lido deve ser multiplicado por 100 para obter o valor real.</p>
+                                                   <ol start="5">
+                                                        <li>Desloque o botão de escolha da escala para fazer os ajustes necessários.</li>
+                                                        <li>Ao concluir as avaliações, desligue o equipamento deslizando o botão da posição “ON” ou “HOLD” para a posição “OFF”, recoloque a tampa de proteção do sensor e guarde o instrumento em local seco e arejado.</li>
+                                                   </ol>
+                                                </div>
+                                            </div>
+                                        </clas>
+                                       
+                                    </div>
+
+                                </div>
+                                <div class="carousel-item h-100">
+                                    <div class="row h-100 justify-content-center align-items-center">
+                                        <div>
+                                            <h3>IMPORTANTE</h3>
+                                            <p>Para manter o equipamento em bom estado de conservação, siga estas orientações:</p>
+                                            <ul>
+                                            <li>Evite forçar, torcer ou esticar em demasia o cabo espiral para não o danificar.</li>
+                                            <li>Não utilize o equipamento em ambientes com umidade relativa superior a 95%.</li>
+                                            <li>Nunca manuseie o instrumento com as mãos molhadas.</li>
+                                            <li>Evite que a lente do sensor seja tocada durante o uso do medidor, pois ela é extremamente sensível.</li>
+                                            <li>Limpe a lente do sensor regularmente utilizando uma flanela macia.</li>
+                                            <li>Quando o equipamento não estiver sendo usado, mantenha a lente do sensor sempre tampada, para evitar danos.</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <a class="carousel-control-prev" href="#carouselLuximetro" role="button" data-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                            <a class="carousel-control-next" href="#carouselLuximetro" role="button" data-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                    </div>
+                    <footer>
+                        <button value="scrIlumi" class="btUi leftIcon btBackMenu">voltar</button>
+                        <a href="./assets/manuais/MANUAL_LUXIMETRO.pdf" target="_blank" download><button  class="btPdf desktopOnly">Baixar manual</button></a>
+                        <button value="selectorLuximetro" class="btUi btPular">Pular</button>
+                    </footer>
+                </div>
+                <div id="selectorLuximetro" class="pages hidden">
+                    <header class="label"><h2>Luxímetro - Seleção de ambiente</h2></header>
+                    <div class="conteudo small">                
+                        <button value="5" class="btUi btUnityCallback">Ocupacional</button>
+                        <button value="8" class="btUi btUnityCallback">Testes</button>
+                    </div>
+                    <footer>
+                            <button value="mainLuximetro" class="btUi leftIcon btBackPage">voltar</button>                   
+                    </footer>
+                </div>        
+        </div>   
+       
+    <!-- Equipamentos ruído - Tela de seleção e equipamentos -->     
+         <div id="scrRuido" class="screen bgColor01 hidden">
+                <h2 class="label">
+                       Risco Ambiental - Ruído
+                       <span>Selecione o equipamento</span>
+                </h2>
+                <div class="conteudo">
+                        <button value="equipDecibelimetro" class="btUi left equip equip_decibelimetro">Decibelímetro</button>
+                        <button value="equipDosimetro" class="btUi left equip equip_dosimetro">Dosímetro</button>
+                       
+                    </div>
+                <footer>
+                        <button value="screen02" class="btUi leftIcon btBackMenu">voltar</button>
+                </footer>    
+         </div>
+            <!--TELA EQUIPAMENTO - Decibelimetro -->
+            <div id="equipDecibelimetro" class="screen bgColor02 hidden">
+                    <div id="mainDecibelimetro" class="pages">
+                        <div id="DecibelimetroContent" class="mobOnly">                                               
+                            mobile only
+                        </div>
+                        <a href="./assets/manuais/MANUAL_DECIBELIMETRO.pdf" target="_blank" download><button  class="btPdf mobOnly">Baixar manual</button></a>
+                        <div id="carouselDecibelimetro" class="carousel slide">
+                                <ol class="carousel-indicators">
+                                    <li data-target="#carouselDecibelimetro" data-slide-to="0" class="active"></li>
+                                    <li data-target="#carouselDecibelimetro" data-slide-to="1"></li>
+                                    <li data-target="#carouselDecibelimetro" data-slide-to="2"></li>
+                                </ol>
+                                <div class="carousel-inner h-100" role="listbox">
+                                    <div class="carousel-item h-100 active">
+                                    <div class="row justify-content-center align-items-center">
+                                        <div >
+                                            <h2>MANUAL DO DECIBELÍMETRO</h2>
+                                            <h3>1.DESCRIÇÃO DO PRODUTO</h3>
+                                            <img src="./assets/img/tela_decibelimetro.png" alt="">
+                                        </div>
+                                        <div>
+                                            <ol>
+                                                <li>Protetor de vento</li>
+                                                <li><em>Display</em></li>
+                                                <li>Tecla de liga/desliga</li>
+                                                <li>Tecla “MAX”</li>
+                                                <li>Tecla “LEVEL” (seleção de escala)</li>
+                                                <li>Tecla “A/C”</li>
+                                                <li>Tecla “FAST/SLOW”</li>
+                                                </ol>
+                                            </div>
+                                    </div>
+                                    </div>
+                                    <div class="carousel-item h-100">
+                                        <div class="row justify-content-center align-items-center">
+                                            <div>
+                                                <h2>2. DESCRIÇÃO DO DISPLAY</h2>
+                                                <img src="./assets/img/display_decibelimetro.png" class="img-responsive img-center" style="max-width: 550px;" alt="">
+                                            </div>
+                                            <div>
+                                                <ol>
+                                                    <li>Resposta rápida ou lenta</li>
+                                                    <li>Barra gráfica</li>
+                                                    <li>Indicador de horário</li>
+                                                    <li>Indicador dB</li>
+                                                    <li>Ponderação A/C</li>
+                                                    <li>Indicador de registro máximo</li>
+                                                    <li>Nível de pressão sonora</li>
+                                                </ol>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="carousel-item h-100">
+                                        <div class="row justify-content-center align-items-center">
+                                            <div class="caixa">
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <h2>3. OPERAÇÃO</h2>
+                                                        <p>Ao utilizar o medidor de nível sonoro, atente ao funcionamento das teclas:</p>
+                                                        <ul>
+                                                            <li>A tecla 3 liga e desliga o instrumento.</li>
+                                                            <li>A tecla 4 congela a leitura máxima no <em>display</em>.</li>
+                                                            <li>A tecla 5 seleciona entre as escalas 30 a 130, 80 a 130, 70 a 120, 60 a 110, 50 a 100, 40 a 90 e 30 a 80.</li>
+                                                            <li>A tecla 6 seleciona a ponderação de frequência A/C.</li>
+                                                            <li>A tecla 7 seleciona entre resposta rápida e lenta.</li>
+                                                            </ul>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <h2>4. MODO DE UTILIZAÇÃO DO APARELHO</h2>
+                                                        <p>Para utilizar o aparelho, siga estes passos:</p>
+                                                        <ol>
+                                                            <li>Ligue o aparelho no botão de ligar (tecla 3).</li>
+                                                            <li>Aperte o botão “A/C” (tecla 6) e selecione a resposta “A” ou “C”.</li>
+                                                            <li>Aperte o botão “FAST/SLOW” (tecla 7).</li>
+                                                            <li>Aperte o botão “LEVEL” (tecla 5) para escolher a escala.</li>
+                                                            <li>Aperte novamente o botão “FAST/SLOW” (tecla 7) por três segundos para iniciar a gravação dos dados. A palavra “RECORD” aparecerá no <em>display</em>.</li>
+                                                            <li>Para encerrar a gravação, aperte novamente o botão “FAST/SLOW” (tecla 7). A palavra “RECORD” desaparecerá do <em>display</em>, e a gravação está encerrada.</li>
+                                                            <li>Aperte o botão “MAX” (tecla 4) para congelar a maior leitura no leitor.</li>
+                                                            <li>Desligue o aparelho no botão de ligar (tecla 3).</li>
+                                                        </ol>
+                                                    </div>
+                                                </div>
+
+                                            </div>                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                <a class="carousel-control-prev" href="#carouselDecibelimetro" role="button" data-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                                <a class="carousel-control-next" href="#carouselDecibelimetro" role="button" data-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                        </div>
+                        <footer>
+                            <button value="scrRuido" class="btUi leftIcon btBackMenu">voltar</button>  
+                            <a href="./assets/manuais/MANUAL_DECIBELIMETRO.pdf" target="_blank" download><button  class="btPdf desktopOnly">Baixar manual</button></a>                          
+                            <button value="selectorDecibelimetro" class="btUi btPular">Pular</button>                
+                        </footer>
+                    </div>
+                    <div id="selectorDecibelimetro" class="pages hidden">
+                        <header class="label"><h2>Decibelímetro - Seleção de ambiente</h2></header>
+                        <div class="conteudo small">                
+                            <button value="1" class="btUi btUnityCallback">Ocupacional</button>                           
+                            <button value="8" class="btUi btUnityCallback">Testes</button>                            
+                        </div>
+                        <footer>
+                                <button value="mainDecibelimetro" class="btUi leftIcon btBackPage">voltar</button>                   
+                        </footer>
+                    </div>        
+            </div>
+            <!--TELA EQUIPAMENTO - Dosimetro -->
+            <div id="equipDosimetro" class="screen bgColor02 hidden">
+                    <div id="mainDosimetro" class="pages">
+                        <div id="DosimetroContent" class="mobOnly">                                               
+                            mobile only
+                        </div>
+                        
+                        <a href="./assets/manuais/MANUAL_DOSIMETRO.pdf" target="_blank" download><button  class="btPdf mobOnly">Baixar manual</button></a>
+                        
+                        <div id="carouselDosimetro" class="carousel slide">
+                                <ol class="carousel-indicators">
+                                    <li data-target="#carouselDosimetro" data-slide-to="0" class="active"></li>
+                                    <li data-target="#carouselDosimetro" data-slide-to="1"></li>
+                                    <li data-target="#carouselDosimetro" data-slide-to="2"></li>
+                                    <li data-target="#carouselDosimetro" data-slide-to="3"></li>
+                                    <li data-target="#carouselDosimetro" data-slide-to="4"></li>
+                                    <li data-target="#carouselDosimetro" data-slide-to="5"></li>
+                                    <li data-target="#carouselDosimetro" data-slide-to="6"></li>
+                                    <li data-target="#carouselDosimetro" data-slide-to="7"></li>
+                                   
+                                </ol>
+                                <div class="carousel-inner h-100" role="listbox">
+                                    <div class="carousel-item h-100 active">                                        
+                                    <div class="row justify-content-center align-items-center">                                      
+                                        <div class="row justify-content-center align-items-center"> 
+                                    
+                                            <div class="col-lg-5">
+                                                <img src="./assets/img/tela_dosimetro.png" style="max-width: 300px;" alt="">
+                                             </div>                                        
+                                            <div class="col-lg-7">
+                                                <h2>MANUAL DE OPERAÇÃO</h2>
+                                                <h3>1. EQUIPAMENTO</h3>
+                                                <ol>
+                                                    <li>Microfone</li>
+                                                    <li>Tela LCD</li>
+                                                    <li>Bot&atilde;o de ligar/desligar</li>
+                                                    <li>Seletor para cima e seletor para baixo</li>
+                                                    <li>Bot&atilde;o de <em>start</em>/<em>stop</em></li>
+                                                    <li>Seletor para a esquerda e seletor para a direita</li>
+                                                    <li>Bot&atilde;o de confirma&ccedil;&atilde;o</li>
+                                                    <li>Presilhas de fixa&ccedil;&atilde;o</li>
+                                                    </ol>
+                                                </div>
+                                            </div>
+                                    </div>
+                                    </div>
+                                    <div class="carousel-item h-100">
+                                        <div class="row justify-content-center align-items-center  h-100">                                          
+                                            <div class="row justify-content-center align-items-center">  
+                                                <div class="caixa">
+                                                    <h3>2. INSTRUÇÕES DE OPERAÇÃO</h3>
+                                                    <ol>
+                                                        <li>Ligue o equipamento por meio da tecla <img src="./assets/img/bt_dosimetro_01.jpg"> e aguarde que ele inicie.</li>
+                                                        <li>As seguintes op&ccedil;&otilde;es estar&atilde;o dispon&iacute;veis:</li>
+                                                    </ol>
+                                                    <div class="row">
+                                                        <div class="col-lg-4"><img src="./assets/img/screen_dosimetro_01.jpg" alt=""></div>
+                                                        <div class="col-lg-8">
+                                                            <ul>
+                                                                <li>A navegação entre as opções é realizada pelas teclas <img src="./assets/img/bt_dosimetro_02.jpg" alt=""><img src="./assets/img/bt_dosimetro_03.jpg" alt="">. Ao escolher a opção desejada, clique em <img src="./assets/img/bt_dosimetro_04.jpg" alt="">.</li>
+                                                                <li>A opção de dosimetria inicia o processo de avaliação.</li>
+                                                                <li>A opção de configuração permite ajustar os parâmetros de avaliação.</li>
+                                                                <li>A opção de consulta permite acessar o resultado da avaliação.</li>
+                                                                </ul>
+                                                                <p> </p>
+                                                                <p><strong>Importante</strong>: configure os parâmetros antes de iniciar o processo de avaliação.</p>
+                                                            </ul>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                                                                      
+                                            
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="carousel-item h-100">
+                                        <div class="row justify-content-center align-items-center h-100">
+                                            <div class="caixa">
+                                                <h3>3. DOSIMETRIA</h3>
+                                                <p>Ao selecionar a opção de dosimetria, a tela de calibração inicial é apresentada:</p>
+                                                <div class="row">
+                                                    <div class="col-lg-4">
+                                                        <img src="./assets/img/screen_dosimetro_02.jpg" alt="">
+                                                    </div>
+                                                    <div class="col-lg-8">
+                                                        <ul>
+                                                            <li>A navegação entre as opções é realizada pelas teclas <img src="./assets/img/bt_dosimetro_02.jpg" alt=""><img src="./assets/img/bt_dosimetro_03.jpg" alt="">.</li>
+                                                            <li>Para realizar a calibração inicial, selecione a opção de ajuste desejada.</li>
+                                                            <li>Retire a capa de espuma protetora do microfone e conecte e acione o calibrador.</li>
+                                                            <li>Clique em <img src="./assets/img/bt_dosimetro_04.jpg" alt=""> na tela do audiodosímetro.</li>
+                                                            <li>Desligue e retire o calibrador acústico.</li>
+                                                            <li>Recoloque a capa de proteção no microfone.</li>
+                                                            </ul>
+                                                            <p>Clique em “Avançar” para concluir a calibração inicial.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="carousel-item h-100">
+                                        <div class="row justify-content-center align-items-center h-100">
+                                            <div class="caixa">
+                                                <p>Após concluir a calibração inicial, a seguinte tela é exibida:</p>
+                                                <div class="row">
+                                                    <div class="col-lg-4">
+                                                        <img src="./assets/img/screen_dosimetro_03.jpg" alt="">
+                                                    </div>
+                                                    <div class="col-lg-8">
+                                                        <ul>
+                                                            <li>Fixe o equipamento no trabalhador por meio das presilhas.</li>
+                                                            <li>Clique em <img src="./assets/img/bt_dosimetro_05.jpg" alt="">   até que a opção <img src="./assets/img/dosimetro_op01.jpg" alt=""> seja mostrada.</li>
+                                                            <li>Clique em <img src="./assets/img/bt_dosimetro_04.jpg" alt=""> para iniciar a dosimetria de ruído.</li>
+                                                            <li>Ao término do tempo de dosimetria, clique em até que a opção <img src="./assets/img/dosimetro_op02.jpg" alt=""> seja mostrada.</li>
+                                                            <li>Clique em <img src="./assets/img/bt_dosimetro_04.jpg" alt=""> para finalizar a dosimetria de ruído.</li>
+                                                            <li>Pressione <img src="./assets/img/bt_dosimetro_04.jpg" alt=""> quando a mensagem “Dosimetria finalizada” aparecer na tela.</li>
+                                                            </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="carousel-item h-100">
+                                        <div class="row h-100 justify-content-center align-items-center">
+                                            <div class="caixa">
+                                                <p>Após concluir a dosimetria, a seguinte tela é exibida:</p>
+                                                <div class="row">
+                                                    <div class="col-lg-3">
+                                                        <img src="./assets/img/screen_dosimetro_04.jpg" alt="">
+                                                    </div>
+                                                    <div class="col-lg-9">
+                                                        <ul>
+                                                            <li>A navegação entre as opções é realizada pelas teclas <img src="./assets/img/bt_dosimetro_02.jpg" alt=""><img src="./assets/img/bt_dosimetro_03.jpg" alt="">. O processo de calibração final é o mesmo do processo de calibração inicial.</li>
+                                                            <li>Pressione <img src="./assets/img/bt_dosimetro_04.jpg" alt=""> quando definir a seleção.</li>
+                                                            <li>Se a seleção estiver sobre a opção “SIM”, um resumo da calibração será apresentado com os seguintes itens:
+                                                              <ol>
+                                                            <li>Valor da calibração inicial</li>
+                                                            <li>Valor da calibração final</li>
+                                                            <li>Diferença entre ambos os valores</li>
+                                                            </ol>
+                                                              </li>
+                                                            </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="carousel-item h-100">
+                                        <div class="row h-100 justify-content-center align-items-center">
+                                            <div class="caixa">
+                                                <h3>4.	CONFIGURAÇÃO</h3>
+                                                <p>Ao selecionar a opção de configuração, a seguinte tela é apresentada:</p>
+                                                <div class="row">
+                                                    <div class="col-lg-4">
+                                                        <img src="./assets/img/screen_dosimetro_05.jpg" alt="">
+                                                    </div>
+                                                    <div class="col-lg-8">
+                                                        <ul>
+                                                            <li>Selecione uma das configurações para ajustar os parâmetros.</li>
+                                                            <li>Selecione a opção “Voltar” para retornar à tela inicial.</li>
+                                                            <li>Clique em <img src="./assets/img/bt_dosimetro_04.jpg" alt=""> para realizar a ação.</li>    
+                                                        </ul>
+                                                            
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="carousel-item h-100">
+                                        <div class="row h-100 justify-content-center align-items-center">
+                                            <div class="caixa">                                                
+                                               <p>Ao selecionar uma opção de configuração (CONF1, CONF2 ou CONF3), a seguinte tela é exibida:</p> 
+                                               <div class="row">
+                                               <div class="col-lg-3">
+                                                   <img src="./assets/img/screen_dosimetro_06.jpg" alt="">
+                                               </div>                                              
+                                                <div class="col-lg-9">
+                                                    <p>Descrição</p>
+                                                    <table>
+                                                        <tbody>
+                                                        <tr>
+                                                        <td >
+                                                        <p><strong>Sigla</strong></p>
+                                                        </td>
+                                                        <td >
+                                                        <p><strong>Descrição</strong></p>
+                                                        </td>
+                                                        <td >
+                                                        <p><strong>Opções</strong></p>
+                                                        </td>
+                                                        </tr>
+                                                        <tr>
+                                                        <td >
+                                                        <p>CR</p>
+                                                        </td>
+                                                        <td >
+                                                        <p>Critério de referência</p>
+                                                        </td>
+                                                        <td >
+                                                        <p>80, 85 e 90 dB</p>
+                                                        </td>
+                                                        </tr>
+                                                        <tr>
+                                                        <td >
+                                                        <p>Q</p>
+                                                        </td>
+                                                        <td >
+                                                        <p>Taxa de duplicação de dose</p>
+                                                        </td>
+                                                        <td >
+                                                        <p>3, 4 e 5 dB</p>
+                                                        </td>
+                                                        </tr>
+                                                        <tr>
+                                                        <td >
+                                                        <p>NLI</p>
+                                                        </td>
+                                                        <td >
+                                                        <p>Nível limiar de integração</p>
+                                                        </td>
+                                                        <td >
+                                                        <p>80 até 85</p>
+                                                        </td>
+                                                        </tr>
+                                                        <tr>
+                                                        <td >
+                                                        <p>PT</p>
+                                                        </td>
+                                                        <td>
+                                                        <p>Ponderação temporal</p>
+                                                        </td>
+                                                        <td >
+                                                        <p>Fast (F), Slow (S) e Impulse (I)</p>
+                                                        </td>
+                                                        </tr>
+                                                        <tr>
+                                                        <td >
+                                                        <p>PF</p>
+                                                        </td>
+                                                        <td >
+                                                        <p>Ponderação em frequência</p>
+                                                        </td>
+                                                        <td >
+                                                        <p>A, C e Z</p>
+                                                        </td>
+                                                        </tr>
+                                                        </tbody>
+                                                        </table>
+                                                        
+                                                        <ul>
+                                                            <li>Utilize os botões <img src="./assets/img/bt_dosimetro_02.jpg" alt=""><img src="./assets/img/bt_dosimetro_03.jpg" alt=""> para navegar entre as opções e os botões  <img src="./assets/img/bt_dosimetro_06.jpg" alt=""><img src="./assets/img/bt_dosimetro_07.jpg" alt=""> para alterar os valores .</li>
+                                                        </ul>
+                                                        <p><strong>Atenção</strong>: ao finalizar a configuração, clique em  <img src="./assets/img/bt_dosimetro_04.jpg" alt=""> . Se a opção “Voltar” estiver selecionada, o audiodosímetro não salvará os dados na configuração.</p>
+                                               </div>
+                                            </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="carousel-item h-100">
+                                        <div class="row h-100 justify-content-center align-items-center">
+                                            <div class="caixa">  
+                                                <h3>5. CONSULTA</h3>  
+                                                <p>Ao selecionar a opção de consulta, a seguinte tela, com os resultados da dosimetria, é apresentada:</p>
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <img src="./assets/img/screen_dosimetro_07.png" style="max-width:280px" alt=""> <br>
+                                                        <img src="./assets/img/dosimetro_op03.jpg" alt="">
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <ul>
+                                                            <li><strong>Pico</strong>: maior valor registrado pelo equipamento.</li>
+                                                            <li><strong>Lavg</strong>: nível médio de ruído no tempo avaliado.</li>
+                                                            <li><strong>Leq</strong>: nível equivalente de ruído no período avaliado, sem o NLI.</li>
+                                                            <li><strong>Dose</strong>: valor em percentual da dose para o tempo avaliado.</li>
+                                                            <li><strong>NEN</strong>: nível de exposição normalizado para uma jornada de oito horas.</li>
+                                                            </ul>
+                                                            <p>Selecione a opção “Voltar” e clique em <img src="./assets/img/bt_dosimetro_04.jpg" alt=""> para retornar à tela inicial.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                   
+                                </div>
+                                <a class="carousel-control-prev" href="#carouselDosimetro" role="button" data-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                                <a class="carousel-control-next" href="#carouselDosimetro" role="button" data-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                        </div>
+                        <footer>
+                            <button value="scrRuido" class="btUi leftIcon btBackMenu">voltar</button>
+                            <a href="./assets/manuais/MANUAL_DOSIMETRO.pdf" target="_blank" download><button  class="btPdf desktopOnly">Baixar manual</button></a>
+                            <button value="selectorDosimetro" class="btUi btPular">Pular</button>
+                        </footer>
+                    </div>
+                    <div id="selectorDosimetro" class="pages hidden">
+                        <header class="label"><h2>Dosímetro - Seleção de ambiente</h2></header>
+                        <div class="conteudo small">                
+                            <button value="2" class="btUi btUnityCallback">Ocupacional</button>
+                            <button value="8" class="btUi btUnityCallback">Testes</button>
+                        </div>
+                        <footer>
+                                <button value="mainDosimetro" class="btUi leftIcon btBackPage">voltar</button>                   
+                        </footer>
+                    </div>        
+            </div>
+    
+    <!--    Equipamentos Calor - Tela de seleção e equipamentos -->
+        <div id="scrCalor" class="screen bgColor01 hidden">
+                <h2 class="label">
+                       Risco Ambiental - Calor
+                       <span>Selecione o equipamento</span>
+                </h2>
+                <div class="conteudo">
+                        <button value="equipIBUTG" class="btUi left equip equip_ibutg">Medidor de IBUTG</span></button>
+                       
+                    </div>
+                <footer>
+                        <button value="screen02" class="btUi leftIcon btBackMenu">voltar</button>
+                </footer>    
+        </div>
+            <!--TELA EQUIPAMENTO - IBUTG -->
+            <div id="equipIBUTG" class="screen bgColor02 hidden">
+                <div id="mainIBUTG" class="pages">
+                    <div id="IBUTGContent" class="mobOnly">                                               
+                        mobile only
+                    </div>
+                    <a href="./assets/manuais/MANUAL_IBUTG.pdf" target="_blank" download><button  class="btPdf mobOnly">Baixar manual</button></a>
+                    <div id="carouselIBUTG" class="carousel slide">
+                            <ol class="carousel-indicators">
+                                <li data-target="#carouselIBUTG" data-slide-to="0" class="active"></li>
+                                <li data-target="#carouselIBUTG" data-slide-to="1"></li>
+                                <li data-target="#carouselIBUTG" data-slide-to="2"></li>
+                                <li data-target="#carouselIBUTG" data-slide-to="3"></li>
+                                <li data-target="#carouselIBUTG" data-slide-to="4"></li>
+                                <li data-target="#carouselIBUTG" data-slide-to="5"></li>
+                                <li data-target="#carouselIBUTG" data-slide-to="6"></li>
+                                <li data-target="#carouselIBUTG" data-slide-to="7"></li>
+                                <li data-target="#carouselIBUTG" data-slide-to="8"></li>
+                            </ol>
+                            <div class="carousel-inner h-100" role="listbox">
+                                <div class="carousel-item h-100 active">
+                                <div class="row h-100 justify-content-center align-items-center">
+                                    <div class="caixa">
+                                        <h2>MANUAL DO MEDIDOR DE IBUTG </h2>
+                                        <div class="row">
+                                            <div class="col-lg-7">
+                                                <img src="./assets/img/tela_ibutg.png" class="img-responsive" style="max-width: 400px;" alt="">
+                                            </div>
+                                            <div class="col-lg-5">
+                                                <ol>
+                                                    <li><em>Display</em></li>
+                                                    <li>Tecla de ligar/desligar e tecla de voltar</li>
+                                                    <li>Tecla de chamada de menu e confirmação de operação ou ajuste</li>
+                                                    <li>Tecla de incremento e decremento (setas)</li>
+                                                    <li>Barra de sensores</li>
+                                                    <li>Termômetro de Bulbo úmido</li>
+                                                    <li>Termômetro de Bulbo seco</li>
+                                                    <li>Termômetro de globo</li>
+                                                    <li>Entrada USB</li>
+                                                    </ol>
+                                                </div>
+                                        </div>
+                                    </div>
+                                   
+                                </div>
+                                </div>
+                                <div class="carousel-item h-100">
+                                    <div class="row h-100 justify-content-center align-items-center">
+                                        <div class="caixa">
+                                            <div class="row">
+                                            <p>O medidor de estresse térmico digital portátil efetua rápida e precisamente o cálculo de IBUTG interno e externo, utilizando um sensor de bulbo seco para temperatura ambiental, um sensor de bulbo úmido para os efeitos da umidade no indivíduo e um globo térmico para avaliação dos efeitos da irradiação artificial de calor no ambiente.</p>
+
+                                            <p>A avaliação de calor deve ser feita visando a caracterizar a exposição de todos os trabalhadores considerados no estudo.</p>
+
+                                            <p>O conjunto de medições deve representar as condições reais de exposição ocupacional do grupo de trabalhadores objeto do estudo. Dessa forma, a avaliação deve cobrir todas as condições habituais – operacionais e ambientais – que envolvem o trabalhador no exercício de suas funções.</p>
+
+                                            <p>Para que as medições representem a exposição ocupacional, é importante que o período de amostragem seja adequadamente escolhido, considerando os 60 minutos corridos de exposição que correspondam à condição de sobrecarga térmica mais desfavorável. Tal situação somente é identificada mediante análise conjunta do par de variáveis “condições térmicas do ambiente” e “atividades físicas desenvolvidas pelo trabalhador”, e nunca por meio da análise isolada de cada uma delas.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="carousel-item h-100">
+                                    <div class="row h-100 justify-content-center align-items-center">
+                                        <div class="caixa">
+                                            <div class="row">
+                                                <p>Havendo dúvidas quanto ao período de 60 minutos corridos de exposição mais desfavorável, este pode ser identificado por meio de avaliação que cubra um período de tempo maior, envolvendo, se necessário, toda a jornada de trabalho. No entanto, a determinação do <span class="overstrike">IBUTG</span> e da taxa metabólica média(<span class="overstrike">M</span>) para a caracterização da exposição ocupacional deve ser feita com base no período de 60 minutos identificado como mais desfavorável. </p>
+                                                <!--trocar depois da revisão-->
+                                                <p>A altura de montagem do equipamento deve coincidir com a região mais atingida do corpo. Quando a região do corpo mais atingida não for definida, o conjunto deve ser montado à altura do tórax do trabalhador exposto. O equipamento de medição deve ser posicionado de forma que as escalas ou os mostradores de leitura fiquem na face oposta àquela voltada para a fonte de calor, para facilitar a leitura e evitar interferências na medição</p>
+                                                <!---->
+                                                <p>Os procedimentos de avaliação devem interferir o mínimo possível nas condições ambientais e operacionais características da condição de trabalho em estudo.</p>
+                                                <p>Condições de exposição não rotineiras, decorrentes de operações ou procedimentos de trabalho previsíveis, mas não habituais, devem ser avaliadas e interpretadas isoladamente. </p>
+                                                <p>Antes de iniciar os procedimentos de avaliação, devem ser obtidas informações administrativas visando a identificar as variáveis, as peculiaridades e as especificidades que envolvem as condições de trabalho que serão objetos de estudo e necessárias à adequada caracterização da exposição dos trabalhadores. Essas informações devem ser confirmadas por observações de campo.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="carousel-item h-100">
+                                    <div class="row h-100 justify-content-center align-items-center" style="flex-direction: column;">
+                                        <div class="caixa">
+                                           
+                                                <h2>Procedimentos de medição</h2>
+                                                <h3>Aspectos gerais</h3>
+                                                <p>Antes de iniciar as medições para determinar o IBUTG, alguns pontos devem ser observados.</p>
+                                              
+                                                <p>Quanto ao equipamento de medição, devem-se verificar:</p>
+                                                <ul>
+                                                <li>A integridade física e/ou eletromecânica e a coerência no comportamento de resposta do instrumento</li>
+                                                <li>A suficiência de carga das baterias para o tempo de medição previsto</li>
+                                                <li>O atendimento da calibração aos requisitos da medição a ser realizada</li>
+                                                <li>A necessidade de utilização de cabo de extensão para evitar ou minimizar a influência de interferências inaceitáveis</li>
+                                                <li>A umidificação prévia do pavio do termômetro de bulbo úmido, que deve ocorrer de imediato, por capilaridade, quando a extremidade inferior dele entrar em contato com a água destilada</li>
+                                                <li>A necessidade de substituição do pavio e da água destilada no início de cada medição em função de sujidade decorrente da deposição de contaminantes ambientais</li>
+                                                </ul>
+                                          
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="carousel-item h-100">
+                                    <div class="row h-100 justify-content-center align-items-center">
+                                        <div class="caixa">
+                                            <div class="row">
+                                                <p>Como avaliador, você deve:</p>
+                                                <ul>
+                                                <li>Evitar que seu posicionamento e sua conduta interfiram na condição de exposição sob avaliação para não falsear os resultados obtidos (se necessário, utilizar avaliação remota, por meio de uso de cabo de extensão ou outros dispositivos que permitam leitura a distância)</li>
+                                                <li>Evitar obstáculos entre os equipamentos de medição e a fonte, tais como a presença do trabalhador, a fim de não causar interferências e erros nas medições</li>
+                                                <li>Adotar as medidas necessárias para impedir que o usuário, ou qualquer terceiro, possa fazer alterações na programação do equipamento, comprometendo os resultados obtidos</li>
+                                                <li>Informar ao trabalhador a ser avaliado que a medição não deve interferir nas atividades habituais dele, devendo manter a rotina de trabalho; que o equipamento de medição não pode ser tocado ou obstruído; e que o equipamento de medição só pode ser removido pelo avaliador.</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="carousel-item h-100">
+                                    <div class="row h-100 justify-content-center align-items-center">
+                                        <div class="caixa">                                           
+                                                <h3>Procedimentos de utilização</h3>
+                                                <p>Para carregar o TD-500, conecte a entrada USB (9) ao carregador. O tempo ideal para a carga completa da bateria é de quatro horas, não devendo exceder muito esse tempo. Durante o período de carregamento, a barra de sensores deve ficar conectada.</p>
+                                                <p>Observação: nunca carregue o instrumento pelo conector da barra de sensores.</p>
+                                                <img src="./assets/img/ibutg_certo_errado.png" class="img-responsive img-center-clear"  alt="">
+                                                <p>Se a carga da bateria estiver muito baixa, o equipamento exibirá a seguinte mensagem e automaticamente se desligará:</p>
+                                                <img src="./assets/img/scr_ibutg01.png"  class="img-responsive img-center-clear" alt="">                                                                                      
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="carousel-item h-100">
+                                    <div class="row h-100 justify-content-center align-items-center">
+                                        <div class="caixa">
+                                               <p>Após carregar a bateria, ligue o equipamento, pressionando a tecla de ligar/desligar (2). A mensagem a seguir aparecerá:</p>
+                                               <p><img src="./assets/img/scr_ibutg02.png" class="img-responsive img-center-clear" alt=""></p>
+                                               <p>Após três segundos, o equipamento estará operando normalmente.</p>
+                                               <p>Ao pressionar qualquer tecla, a iluminação do visor será ativada por dez segundos. Por meio das setas (4), selecione a tela de informação desejada.</p>
+                                               <table class="img-center-clear">
+                                                   <tr>
+                                                       <td style="width:220px">
+                                                        Temperatura de bulbo úmido<br>
+                                                        Temperatura de bulbo seco
+                                                           
+                                                        </td>
+                                                       <td>
+                                                           <img src="./assets/img/scr_ibutg03.png" alt="">
+                                                       </td>
+                                                   </tr>
+                                               </table>
+                                               <table>
+                                                <tr>
+                                                    <td style="width:220px">Temperatura de globo<br>
+                                                        Restante da memória (%)
+                                                     </td>
+                                                    <td>
+                                                        <img src="./assets/img/scr_ibutg04.png" alt="">
+                                                    </td>
+                                                </tr>
+                                                </table>
+                                                <table>
+                                                    <tr>
+                                                        <td style="width:220px">Índice IBUTG interno<br>
+                                                            Índice IBUTG externo
+                                                        </td>
+                                                        <td>
+                                                            <img src="./assets/img/scr_ibutg05.png" alt="">
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                                <table>
+                                                    <tr>
+                                                        <td style="width:220px">Hora<br>
+                                                            Data
+                                                        </td>
+                                                        <td>
+                                                            <img src="./assets/img/scr_ibutg06.png" alt="">
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="carousel-item h-100">
+                                    <div class="row h-100 justify-content-center align-items-center">
+                                        <div class="caixa">
+                                            <h3>Menu de configurações </h3>
+                                            <p>Para selecionar o menu de configurações, pressione a tecla de chamada de menu e confirmação de operação ou ajuste (3). Para sair do menu, pressione a tecla de voltar (2). Por meio das setas de incremento e decremento (4), selecione a opção do menu desejada. O menu será cancelado após 30 segundos de inatividade.</p>
+                                            <h3>Ajuste de data e de hora</h3>
+                                            <p>Nesta opção, é possível acertar a data e o relógio interno do instrumento.</p>
+                                            <img src="./assets/img/scr_ibutg07.png" class="img-responsive img-center-clear" alt="">
+                                            <p>Você pode ajustar usando as setas (4) ou cancelar utilizando a tecla de voltar (2).</p>
+                                            <p>O campo de ajuste que está sendo alterado ficará piscando alternadamente até que seja confirmada a alteração por meio da tecla “Sel” (3). As novas data e hora só serão validadas após o ajuste do ano. A sequência para ajuste da data é: 
+                                                DIA > MÊS > ANO.
+                                                </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="carousel-item h-100">
+                                    <div class="row h-100 justify-content-center align-items-center">
+                                        <div class="caixa">
+                                            <h3>Desligando o equipamento</h3>
+                                            <p>Para desligar o equipamento, pressione a tecla de ligar/desligar (2) por cinco segundos. A mensagem a seguir aparecerá, e o sistema se desligará.</p>
+                                            <img src="./assets/img/scr_ibutg08.png" class="img-responsive img-center-clear" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <a class="carousel-control-prev" href="#carouselIBUTG" role="button" data-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                            <a class="carousel-control-next" href="#carouselIBUTG" role="button" data-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                    </div>
+                    <footer>
+                        <button value="scrCalor" class="btUi leftIcon btBackMenu">voltar</button>
+                        <a href="./assets/manuais/MANUAL_IBUTG.pdf" target="_blank" download><button  class="btPdf desktopOnly">Baixar manual</button></a>
+                        <button value="selectorIBUTG" class="btUi btPular">Pular</button>
+                    </footer>
+                </div>
+                <div id="selectorIBUTG" class="pages hidden">
+                    <header class="label"><h2>Seleção de ambiente</h2></header>
+                    <div class="conteudo small">
+                        <button value="3" class="btUi btUnityCallback">Com carga solar</button>
+                        <button value="4" class="btUi btUnityCallback">Sem carga solar</button>
+                        <button value="8" class="btUi btUnityCallback">Testes</button>
+                    </div>
+                    <footer>
+                            <button value="mainIBUTG" class="btUi leftIcon btBackPage">voltar</button>                   
+                    </footer>
+                </div>        
+            </div>
+        
+    <!--    Equipamentos Gás - Tela de seleção e equipamentos -->
+        <div id="scrGas" class="screen bgColor01 hidden">
+                <h2 class="label">
+                       Risco Ambiental - Gás
+                       <span>Selecione o equipamento</span>
+                </h2>
+                <div class="conteudo">
+                        <button value="equipMultigases" class="btUi left equip equip_multigases">Detector Multigás</span></button>
+                       
+                    </div>
+                <footer>
+                        <button value="screen02" class="btUi leftIcon btBackMenu">voltar</button>
+                </footer>    
+        </div>
+    
+             <!--TELA EQUIPAMENTO - Multigases -->
+             <div id="equipMultigases" class="screen bgColor02 hidden">                
+                    <div id="mainMultigases" class="pages">
+                        <div id="MultigasesContent" class="mobOnly">                                               
+                            mobile only
+                        </div>
+                        <a href="./assets/manuais/MANUAL_MULTIGAS.pdf" target="_blank" download><button  class="btPdf mobOnly">Baixar manual</button></a>
+                        <div id="carouselMultigases" class="carousel slide">
+                                <ol class="carousel-indicators">
+                                    <li data-target="#carouselMultigases" data-slide-to="0" class="active"></li>
+                                    <li data-target="#carouselMultigases" data-slide-to="1"></li>                                   
+                                </ol>
+                                <div class="carousel-inner h-100" role="listbox">
+                                    <div class="carousel-item h-100 active">
+                                    <div class="row justify-content-center align-items-center">
+                                        <div class="caixa">
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <h3>MANUAL DE OPERAÇÃO DO DETECTOR MULTIGÁS</h3>
+                                                    <p>O equipamento, denominado detector de multigás, realiza a medição de, em média, quatro gases, podendo variar de acordo com o fabricante e os sensores necessários na área de aplicação.</p>
+                                                    <p>Neste caso, o equipamento contém a indicação de quatro parâmetros: </p>
+                                                    <ul>
+                                                        <li>Explosividade – LEL (medida em percentual com relação ao LIE)</li>
+                                                        <li>Oxigênio – O<sub>2</sub> (medido em percentual)</li>
+                                                        <li>Sulfeto de hidrogênio – H<sub>2</sub>S (medido em PPM)</li>
+                                                        <li>Monóxido de carbono – CO (medido em PPM)</li>
+                                                    </ul>
+                                                    <p>As leituras indicarão a concentração de cada um dos gases no ambiente de trabalho.</p>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <h3>1. PREPARAÇÃO DO EQUIPAMENTO</h3>
+                                                    <ol>
+                                                        <li>Carregue o detector antes de usá-lo pela primeira vez (recomenda-se que o detector seja carregado após cada dia de trabalho).</li>
+                                                        <li>Calibre o detector antes de usá-lo pela primeira vez e depois de acordo com um cronograma preestabelecido, dependendo do uso e da exposição do sensor a agentes contaminantes.</li>
+                                                        <li>Calibre o detector apenas se você estiver em uma área segura, livre de gases perigosos e com uma atmosfera de 20,9% de oxigênio.</li>
+                                                        <li>Conforme recomendação do fabricante, faça um teste de resposta nos sensores antes do uso, para confirmar a capacidade de resposta ao gás, expondo o detector a uma concentração de gás que exceda as definições de alarme (observação: cada empresa define os valores de parâmetro para disparo do alarme).</li>
+                                                        <li>Verifique manualmente se os alarmes visuais e sonoros estão ativados.</li>
+                                                        <li>Calibre o detector se as leituras não estiverem dentro dos limites especificados.</li>
+                                                    </ol>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                    <div class="carousel-item h-100">
+                                        <div class="row justify-content-center align-items-center">
+                                            <div class="caixa">
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <h3>2.CUIDADOS</h3>
+                                                        <p>Algumas observações devem ser levadas em consideração:</p>
+                                                        <ul>
+                                                            <li>Leituras muito fora da escala podem indicar uma concentração explosiva.</li>
+                                                            <li>Leituras que sobem bruscamente e depois caem ou leituras instáveis podem indicar uma concentração de gás muito alta, o que pode ser perigoso.</li>
+                                                            <li>A exposição prolongada do equipamento a determinadas concentrações de ar e gases combustíveis pode afetar seriamente o desempenho do aparelho. Se um alarme for acionado devido à alta concentração de gases combustíveis, calibre o detector. Se necessário, substitua o sensor.</li>
+                                                            <li>O sensor de combustível deve ser protegido da exposição a compostos de chumbo e hidrocarbonetos clorados.</li>
+                                                            <li>O equipamento não deve ser utilizado em atmosferas inertes ou que excedam 20,9% de oxigênio.</li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <h3>3.MEDIÇÃO</h3>
+                                                        <ol>
+                                                            <li>Ligue o equipamento em área livre de contaminantes.</li>
+                                                            <li>Aguarde o autoteste do equipamento (são apresentados os valores “STEL”, “LOW”, “HIGH”, “TESTE”, “OK”).</li>
+                                                            <li>Posicione o equipamento na área onde gostaria de realizar a medição e aguarde a estabilização dos sensores (em média cinco minutos).</li>
+                                                            <li>Verifique os valores medidos no visor sem retirar o equipamento do ponto de medição.</li>
+                                                        </ol>
+                                                        <p>Esta é a tela inicial do equipamento:</p>
+                                                        <img src="./assets/img/tut_tela_multigases.jpg" alt="Tela inicial do equipamento" class="img-responsive img-center">
+                                                        <p>Qualquer medição com valores diferentes dos citados representa alguma alteração na condição ambiental.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>                                   
+                                </div>
+                                <a class="carousel-control-prev" href="#carouselMultigases" role="button" data-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                                <a class="carousel-control-next" href="#carouselMultigases" role="button" data-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                        </div>
+                        <footer>
+                            <button value="scrGas" class="btUi leftIcon btBackMenu">voltar</button>
+                            <a href="./assets/manuais/MANUAL_MULTIGAS.pdf" target="_blank" download><button  class="btPdf desktopOnly">Baixar manual</button></a>
+                            <button value="selectorMultigases" class="btUi btPular">Pular</button>
+                        </footer>
+                    </div>
+                    <div id="selectorMultigases" class="pages hidden">
+                        <header class="label"><h2>Seleção de ambiente</h2></header>
+                        <div class="conteudo small">        
+                            <button value="6" class="btUi btUnityCallback">Espaço aberto</button>        
+                            <button value="7" class="btUi btUnityCallback">Espaço confinado</button>
+                            <button value="8" class="btUi btUnityCallback">Testes</button>
+                        </div>
+                        <footer>
+                                <button value="mainMultigases" class="btUi leftIcon btBackPage">voltar</button>                   
+                        </footer>
+                    </div>        
+            </div>
+    </div>    
+
+
+</body>
+<script src="assets/js/jquery-3.4.1.min.js"></script>
+<script src="assets/bs4/bootstrap.bundle.min.js"></script>
+<script src="assets/bs4/bootstrap-toggle.min.js"></script>
+<script src="assets/js/init.js"></script>
+
+</html>

@@ -1096,6 +1096,8 @@ b {
     margin: 20px;
     border-radius: 15px;
     max-width: 600px;
+    pointer-events: none;
+    opacity: 0;
 }
 .iluminancia-feedback h3 {
     text-align: center;

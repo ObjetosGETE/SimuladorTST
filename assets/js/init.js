@@ -232,7 +232,7 @@ function showPopUpMsg(title, message, callback) {
     iluminanciaFeedback.addClass('iluminancia-feedback');
     console.log(string.length);
     const iluminanciaFdbkTitle = $('<h3>Análise</h3>');
-    let msg1, msg2, msg3, msg4;
+    let msg1, msg2;
     // string = $('#popupMsg')[0].innerText;
     if (string.length == 104) {
       msg1 = $('<div class="msg-flexbox"><div><h4>Iluminância da tarefa</h4><p>A NHO-11 estabelece para a iluminância dessa atividade um valor de 750 lux, admitindo um valor até 10% menor (675 lux). Compare esses valores com a iluminância dos pontos E, G e J.</p><p>Iluminância da tarefa<br>Ponto E - 810 lux<br>Ponto G - 815 lux<br>Ponto J - 690 lux</p></div><div><h4>Iluminância média</h4><p>A iluminância em qualquer ponto medido não deve ser inferior a 70% da iluminância média. Compare o valor de 70% da média com os pontos A, B, C e D. Consulte a NHO-11 para verificar a existência de mais algum critério de avaliação.</p><p>Iluminância média<br>Ponto A - 720 lux<br>Ponto B - 735 lux<br>Ponto C - 740 lux<br>Ponto D - 720 lux<br><br>Média - 728 lux<br>70% da média - 509,6 lux</p></div></div>')
@@ -243,6 +243,9 @@ function showPopUpMsg(title, message, callback) {
       iluminanciaFeedback.append(msg1);
       iluminanciaFeedback.append(msg2);
       $('#btClosePopup').show();
+      $('#btClosePopup').on('click', function(){
+        $('.iluminancia-feedback').fadeOut();
+      });
       $('.js-btn').length ? $('.js-btn').hide() : console.log('sem botão de retry');
     } else
       if (string.length == 164 || string.length == 153 || string.length == 100) {
@@ -298,6 +301,7 @@ function hidePopUpMsgs(callback) {
 function showConfirmation() {
   uiMessages.classList.remove('hidden');
   confirmacaoMsgWindow.classList.remove('hidden');
+  $('#btClosePopup').removeClass('hidden');
 }
 
 //mosta uma barra com uma mensagem fixa na janela da unity

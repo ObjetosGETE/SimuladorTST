@@ -232,11 +232,11 @@ function showPopUpMsg(title, message, callback) {
     iluminanciaFeedback.addClass('iluminancia-feedback');
     console.log(string.length);
     const iluminanciaFdbkTitle = $('<h3>Análise</h3>');
-    let msg1, msg2;
+    let msg1, msg2, msg3, msg4;
     // string = $('#popupMsg')[0].innerText;
     if (string.length == 104) {
-      msg1 = $('<h4>Iluminância da tarefa</h4><p>A NHO 11 estabelece para a iluminância dessa atividade um valor de 750 lux, admitindo um valor até 10% menor (675 lux). Compare esses valores com a iluminância dos pontos 5, 7 e 10.</p>')
-      msg2 = $('<h4>Iluminância média</h4><p>A iluminância em qualquer ponto medido não deve ser inferior a 70% da iluminância média. Compare o valor de 70% da média com os pontos 1, 2, 3 e 4. A razão entre a iluminância média e a iluminância de cada ponto não deve ser superior a cinco.</p>')
+      msg1 = $('<div class="msg-flexbox"><div><h4>Iluminância da tarefa</h4><p>A NHO-11 estabelece para a iluminância dessa atividade um valor de 750 lux, admitindo um valor até 10% menor (675 lux). Compare esses valores com a iluminância dos pontos E, G e J.</p><p>Iluminância da tarefa<br>Ponto E - 810 lux<br>Ponto G - 815 lux<br>Ponto J - 690 lux</p></div><div><h4>Iluminância média</h4><p>A iluminância em qualquer ponto medido não deve ser inferior a 70% da iluminância média. Compare o valor de 70% da média com os pontos A, B, C e D. Consulte a NHO-11 para verificar a existência de mais algum critério de avaliação.</p><p>Iluminância média<br>Ponto A - 720 lux<br>Ponto B - 735 lux<br>Ponto C - 740 lux<br>Ponto D - 720 lux<br><br>Média - 728 lux<br>70% da média - 509,6 lux</p></div></div>')
+      msg2 = $('')
 
       $('.uiMessage-iluminancia').append(iluminanciaFeedback);
       iluminanciaFeedback.append(iluminanciaFdbkTitle);
@@ -246,9 +246,18 @@ function showPopUpMsg(title, message, callback) {
       $('.js-btn').length ? $('.js-btn').hide() : console.log('sem botão de retry');
     } else
       if (string.length == 164 || string.length == 153 || string.length == 100) {
-        // Você selecionou os pontos corretos para a avaliação da iluminância da tarefa, no entanto os pontos escolhidos para o cálculo da iluminância média estão inadequadas.
-        msg1 = $('<p>A análise não pode ser realizada, pois os pontos escolhidos não estão de acordo com a exigência da NHO 11.</p>')
-        msg2 = $('<p>Escolha novos pontos!</p>')
+        if(string.length == 164) {
+        msg1 = $('<div class="msg-flexbox"><div><p>A análise não pode ser realizada, pois os pontos escolhidos não estão de acordo com a exigência da NHO 11.</p><p>Escolha novos pontos!</p><p>Iluminância da tarefa<br>Ponto E - 810 lux<br>Ponto G - 815 lux<br>Ponto J - 690 lux</p></div></div>');
+        msg2 = $('');
+        }
+        if(string.length == 153) {
+          msg1 = $('<div class="msg-flexbox"><div><p>A análise não pode ser realizada, pois os pontos escolhidos não estão de acordo com a exigência da NHO 11.</p><p>Escolha novos pontos!</p><p>Iluminância média<br>Ponto A - 720 lux<br>Ponto B - 735 lux<br>Ponto C – 740 lux<br>Ponto D - 720 lux<br><br>Média - 728 lux<br>70% da média - 509,6 lux</p></div></div>');
+          msg2 = $('');
+        }
+        if(string.length == 100) {
+          msg1 = $('<div class="msg-flexbox"><div><p>A análise não pode ser realizada, pois os pontos escolhidos não estão de acordo com a exigência da NHO 11.</p><p>Escolha novos pontos!</p></div></div>');
+          msg2 = $('');
+        }        
 
         $('.uiMessage-iluminancia').append(iluminanciaFeedback);
         iluminanciaFeedback.append(iluminanciaFdbkTitle);
